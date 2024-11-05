@@ -1,0 +1,604 @@
+
+@import url("https://p.typekit.net/p.css?s=1&k=rme4nfb&ht=tk&f=9739.9741.9743.9745.9749.46194.46197.46198&a=13032923&app=typekit&e=css");
+@font-face {
+    font-family:"interface";
+    src:url("https://use.typekit.net/af/2837a6/00000000000000003b9ae112/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/2837a6/00000000000000003b9ae112/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/2837a6/00000000000000003b9ae112/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3") format("opentype");
+    font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
+    }
+  @font-face {
+    font-family:"interface";
+    src:url("https://use.typekit.net/af/8882b8/00000000000000003b9ae115/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3") format("woff2"),url("https://use.typekit.net/af/8882b8/00000000000000003b9ae115/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3") format("woff"),url("https://use.typekit.net/af/8882b8/00000000000000003b9ae115/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3") format("opentype");
+    font-display:auto;font-style:normal;font-weight:700;font-stretch:normal;
+    }
+  
+@font-face {
+        font-family:"interface";
+        src:url("https://use.typekit.net/af/26b918/00000000000000003b9ae110/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n3&v=3") format("woff2"),url("https://use.typekit.net/af/26b918/00000000000000003b9ae110/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n3&v=3") format("woff"),url("https://use.typekit.net/af/26b918/00000000000000003b9ae110/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n3&v=3") format("opentype");
+        font-display:auto;font-style:normal;font-weight:300;font-stretch:normal;
+    }
+    
+
+
+@font-face {
+    font-family: "interface";
+    src: url("https://use.typekit.net/af/954afc/00000000000000003b9ae10f/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n1&v=3") format("woff2"),
+            url("https://use.typekit.net/af/954afc/00000000000000003b9ae10f/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n1&v=3") format("woff"),
+            url("https://use.typekit.net/af/954afc/00000000000000003b9ae10f/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n1&v=3") format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 100;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+    background-color: #f2efeb;
+    font-family: "interface", sans-serif; /* Fallback to sans-serif */
+
+}
+
+
+
+
+
+
+
+.navbar {
+    background-color: #eee;
+    display: flex; /* Arrange elements horizontally */
+    justify-content: center; /* Center navbar contents */
+    align-items: center; /* Vertically align content */
+    position: fixed; /* Fix the navbar to the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Make navbar full width */
+    z-index: 10; /* Ensure navbar stays on top of content */
+    height: 90px; /* Set a fixed height for the navbar */
+    margin-bottom: 70px;
+}
+
+.navbar-contents {
+    display: flex; /* Arrange elements horizontally */
+    justify-content: space-between; /* Distribute space evenly */
+    align-items: center; /* Vertically align content */
+    padding: 0 20px; /* Horizontal padding */
+    max-width: 1400px; /* Set a maximum width for navbar */
+    margin: 0 auto; /* Center the navbar contents */
+    width: 100%; /* Make navbar contents full width */
+}
+
+/* Logo styles */
+.logo {
+    flex: 0 0 auto; /* Prevent logo from shrinking */
+}
+
+.logo img {
+    max-width: 100%; /* Adapt image to container width */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Navigation links */
+.nav-links {
+    display: flex; /* Arrange links horizontally */
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+}
+
+.nav-links li {
+    margin-right: 20px; /* Add spacing between links */
+}
+
+.nav-links a {
+    text-decoration: none; /* Remove underline */
+    color: #413f3f; /* Text color */
+    font-weight: bold; /* Emphasize links */
+}
+
+.nav-links a:hover {
+    color: #666; /* Change color on hover */
+    transition: color 0.3s ease; /* Smooth transition */
+}
+
+/* Hamburger menu (responsive) */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none; /* Hide links on smaller screens */
+    }
+
+    .hamburger {
+        display: block; /* Show hamburger menu on smaller screens */
+        cursor: pointer; /* Indicate clickable element */
+    }
+}
+
+/* Hamburger menu styles */
+.hamburger {
+    display: none; /* Initially hidden on larger screens */
+    width: 40px;
+    height: 30px;
+    position: relative;
+}
+
+.bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    margin-bottom: 5px;
+    transition: all 0.3s ease; /* Smooth transitions */
+}
+
+/* Hamburger menu animation */
+.navbar.active .bar:nth-child(1) {
+    transform: translateX(20px) rotate(45deg);
+}
+
+.navbar.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar.active .bar:nth-child(3) {
+    transform: translateX(-20px) rotate(-45deg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.container {
+    display: flex; /* Enable flexbox */
+    max-width: 500px; /* Set max width for container */
+    margin: 0 auto; /* Center the container */
+    align-items: stretch; /* Stretch items to fill the container height */
+    justify-content: space-between; /* Space items evenly */
+    padding: 20px; /* Padding around the container */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), /* Outer shadow for 3D effect */
+                0 5px 15px rgba(0, 0, 0, 0.1); /* Inner shadow for depth */
+    background-color: #f2efeb; /* Set container background color */
+    transform: translateZ(0); /* Create a new stacking context */
+    perspective: 1000px; /* Perspective for 3D effect */
+    margin-top: 120px;
+    top: 50%;
+}
+
+.logo-container {
+    flex: 0 0 150px; /* Fixed width for logo container (adjust as needed) */
+    background-color: #c7c7c7; /* Background color for logo container */
+    padding: 20px; /* Add some padding around the logo */
+    display: flex; /* Center logo inside the container */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    border-radius: 10px 0 0 10px; /* Rounded corners on the left side */
+    box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+}
+
+.login-credentials {
+    flex: 1; /* Take up the remaining space */
+    padding-left: 20px; /* Space between logo and login form */
+    background-color: #ffffff; /* Background color for login credentials */
+    border-radius: 0 10px 10px 0; /* Rounded corners on the right side */
+    box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+}
+
+
+.logo-border {
+    padding: 20px; /* Padding around the logo */
+    display: inline-block; /* Fit the border tightly around the logo */
+}
+
+.logo-image {
+    max-width: 100%; /* Responsive logo */
+    height: auto; /* Maintain aspect ratio */
+    width: 150px; /* Set a fixed width for the logo */
+}
+
+/* Additional styles for login title, form, buttons, etc. */
+.login-title {
+    margin-bottom: 20px; /* Space below the title */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Space between form fields */
+}
+
+.form-label {
+    display: block; /* Make labels block elements */
+    margin-bottom: 5px; /* Space below labels */
+}
+
+.form-input {
+    width: 80%; /* Full width for inputs */
+    padding: 10px; /* Padding for inputs */
+    border: 1px solid #ccc; /* Border for inputs */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.login-btn {
+    display: block; /* Block display for buttons */
+    width: 87%; /* Full width for buttons */
+    padding: 10px; /* Button padding */
+    border: none; /* Remove border */
+    text-align: center;
+    text-decoration: none;
+    color: #fff; /* White text */
+    background-color: #2b2c2b; /* Initial background color */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    margin-bottom: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+
+}
+
+.login-btn:hover {
+    background-color: #1a501d; /* Darker color on hover */
+}
+
+.register-btn {
+    color: #007bff; /* Bootstrap primary color */
+}
+
+
+.google-login {
+    display: flex;
+    align-items: center; /* Align items vertically centered */
+}
+.google-icon {
+    /* You can adjust the translateY value to position it up or down */
+    transform: translateY(0px); /* Change this value to position it */
+}
+.google-btn {
+    display: block; /* Block display for buttons */
+    width: 80%; /* Full width for buttons */
+    padding: 10px; /* Button padding */
+    border: none; /* Remove border */
+    text-align: center;
+    text-decoration: none;
+    color: #000000; /* Black text */
+    background-color: #ffffff; /* Initial background color */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    margin-bottom: 10px; /* Adjust margin bottom */
+    border: 1px solid black; /* Border style */
+    cursor: pointer; /* Pointer on hover */
+}
+
+
+
+
+/* Styling for the Forgot Password link */
+.forgot-password-link {
+    text-align: center; /* Center the text */
+    margin-top: 20px; /* Add some space above */
+}
+
+.forgot-password-btn {
+    color: #000000; /* Bootstrap link color */
+    text-decoration: none; /* No underline */
+}
+
+.forgot-password-btn:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+
+
+
+
+
+
+
+
+/* Tablet Devices (min-width: 768px) */
+@media (max-width: 608px) {
+    /* Adjust container for tablet */
+    .container {
+        max-width: 600px; /* Slightly larger container */
+        flex-direction: row; /* Place elements side by side */
+        margin-top: 80px;
+    }
+    .login-title{
+        text-align: center;
+    }
+
+    /* Logo container for tablet */
+    .logo-container {
+        display: none;
+    }
+
+    /* Login credentials for tablet */
+    .login-credentials {
+        width: auto; /* Auto width for content alignment */
+        padding: 20px; /* Adjust padding */
+        border-radius: 0 10px 10px 0; /* Right side rounded corners */
+    }
+
+    /* Form input for tablet */
+    .form-input {
+        width: 90%; /* Slightly wider input fields */
+    }
+
+    /* Login button for tablet */
+    .login-btn {
+        width: 80%; /* Adjust button width */
+    }
+
+    /* Google button for tablet */
+    .google-btn {
+        padding: 10px 30px; /* Adjust padding for tablet */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Form container */
+.register-form {
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Input fields */
+.register-input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Input fields on focus */
+.register-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Submit button */
+.register-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3f3f3f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for submit button */
+.register-button:hover {
+    background-color: #0056b3;
+}
+
+/* Placeholder color */
+::placeholder {
+    color: #888;
+    font-style: italic;
+}
+
+
+
+.register-btn {
+    display: inline-block;
+    padding: 12px;
+    background-color: #228ad1;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 80%; /* Ensures the link behaves like a block button */
+}
+
+/* Hover effect */
+.register-btn:hover {
+    background-color: #002470;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

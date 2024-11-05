@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Product Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+
+
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-contents">
+            <a href="/" class="logo" aria-label="Home">
+                <img srcset="//theespressolab.com/cdn/shop/files/TEL_LOGO_65x.svg?v=1691497703 1x, //theespressolab.com/cdn/shop/files/TEL_LOGO_130x.svg?v=1691497703 2x" 
+                     src="//theespressolab.com/cdn/shop/files/TEL_LOGO_65x.svg?v=1691497703" 
+                     alt="The Espresso Lab Logo" width="70" height="74" loading="lazy" 
+                     style="max-width:100%; height:auto;" />
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="sku-input-form">
+        <h2 class="form-heading">SKU Information</h2>
+
+        <div class="csv-upload-form">
+            <form action="/upload-csv" method="post" enctype="multipart/form-data">
+                <label for="file-upload" class="upload-label">Upload CSV:</label>
+                <input type="file" id="file-upload" name="file-upload" accept=".csv">
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <div class="form-container">
+            <form action="/submit_form" method="POST">
+                <div class="form-group">
+                    <label for="production_date">Production Date:</label>
+                    <input type="date" id="production_date" name="production_date" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="code">CODE:</label>
+                    <input type="text" id="code" name="code" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="green_coffee_name">Green Coffee Name:</label>
+                    <input type="text" id="green_coffee_name" name="green_coffee_name" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="tel_name">TEL NAME:</label>
+                    <input type="text" id="tel_name" name="tel_name" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="origin">Origin:</label>
+                    <input type="text" id="origin" name="origin" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="producer">Producer:</label>
+                    <input type="text" id="producer" name="producer" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="process">Process:</label>
+                    <input type="text" id="process" name="process" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="elevation">Elevation:</label>
+                    <input type="number" id="elevation" name="elevation" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="region">Region:</label>
+                    <input type="text" id="region" name="region" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="variety">Variety:</label>
+                    <input type="text" id="variety" name="variety" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="tasting_notes">Tasting Notes:</label>
+                    <input type="text" id="tasting_notes" name="tasting_notes" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="tags">Tags:</label>
+                    <input type="text" id="tags" name="tags" class="input-field" required>
+                </div>
+        
+                <h3 class="price-section-heading">Pricing</h3>
+        
+                <div class="form-group">
+                    <label for="filter_wholesale_price_2lb">2Lb Filter Wholesale Price:</label>
+                    <input type="number" id="filter_wholesale_price_2lb" name="filter_wholesale_price_2lb" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="espresso_wholesale_price_2lb">2Lb Espresso Wholesale Price:</label>
+                    <input type="number" id="espresso_wholesale_price_2lb" name="espresso_wholesale_price_2lb" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="filter_wholesale_price_8oz">8oz Filter Wholesale Price:</label>
+                    <input type="number" id="filter_wholesale_price_8oz" name="filter_wholesale_price_8oz" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="espresso_wholesale_price_8oz">8oz Espresso Wholesale Price:</label>
+                    <input type="number" id="espresso_wholesale_price_8oz" name="espresso_wholesale_price_8oz" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="filter_retail_price_8oz">8oz Filter Retail Price:</label>
+                    <input type="number" id="filter_retail_price_8oz" name="filter_retail_price_8oz" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="espresso_retail_price_8oz">8oz Espresso Retail Price:</label>
+                    <input type="number" id="espresso_retail_price_8oz" name="espresso_retail_price_8oz" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="retail_with_box_price_8oz">8oz Retail WITH BOX Price:</label>
+                    <input type="number" id="retail_with_box_price_8oz" name="retail_with_box_price_8oz" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="jar_with_box_price_40gr">40gr Jar WITH BOX Price:</label>
+                    <input type="number" id="jar_with_box_price_40gr" name="jar_with_box_price_40gr" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="jar_normal_price_40gr">40gr Jar Normal Price:</label>
+                    <input type="number" id="jar_normal_price_40gr" name="jar_normal_price_40gr" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="price_100g">100 grams Price:</label>
+                    <input type="number" id="price_100g" name="price_100g" class="input-field" required>
+                </div>
+        
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="submit-button">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+ 

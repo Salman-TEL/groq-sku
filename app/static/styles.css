@@ -1,0 +1,437 @@
+
+@import url("https://p.typekit.net/p.css?s=1&k=rme4nfb&ht=tk&f=9739.9741.9743.9745.9749.46194.46197.46198&a=13032923&app=typekit&e=css");
+@font-face {
+    font-family:"interface";
+    src:url("https://use.typekit.net/af/2837a6/00000000000000003b9ae112/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/2837a6/00000000000000003b9ae112/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/2837a6/00000000000000003b9ae112/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3") format("opentype");
+    font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
+    }
+  @font-face {
+    font-family:"interface";
+    src:url("https://use.typekit.net/af/8882b8/00000000000000003b9ae115/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3") format("woff2"),url("https://use.typekit.net/af/8882b8/00000000000000003b9ae115/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3") format("woff"),url("https://use.typekit.net/af/8882b8/00000000000000003b9ae115/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3") format("opentype");
+    font-display:auto;font-style:normal;font-weight:700;font-stretch:normal;
+    }
+  
+@font-face {
+        font-family:"interface";
+        src:url("https://use.typekit.net/af/26b918/00000000000000003b9ae110/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n3&v=3") format("woff2"),url("https://use.typekit.net/af/26b918/00000000000000003b9ae110/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n3&v=3") format("woff"),url("https://use.typekit.net/af/26b918/00000000000000003b9ae110/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n3&v=3") format("opentype");
+        font-display:auto;font-style:normal;font-weight:300;font-stretch:normal;
+    }
+    
+
+
+@font-face {
+    font-family: "interface";
+    src: url("https://use.typekit.net/af/954afc/00000000000000003b9ae10f/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n1&v=3") format("woff2"),
+            url("https://use.typekit.net/af/954afc/00000000000000003b9ae10f/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n1&v=3") format("woff"),
+            url("https://use.typekit.net/af/954afc/00000000000000003b9ae10f/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n1&v=3") format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 100;
+    }
+
+
+body {
+    font-family: 'InterFace', sans-serif;
+    background-color: #f2efeb;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+
+.navbar {
+    background-color: #eee;
+    display: flex; /* Arrange elements horizontally */
+    justify-content: center; /* Center navbar contents */
+    align-items: center; /* Vertically align content */
+    position: fixed; /* Fix the navbar to the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Make navbar full width */
+    z-index: 10; /* Ensure navbar stays on top of content */
+    height: 90px; /* Set a fixed height for the navbar */
+}
+
+.navbar-contents {
+    display: flex; /* Arrange elements horizontally */
+    justify-content: space-between; /* Distribute space evenly */
+    align-items: center; /* Vertically align content */
+    padding: 0 20px; /* Horizontal padding */
+    max-width: 1400px; /* Set a maximum width for navbar */
+    margin: 0 auto; /* Center the navbar contents */
+    width: 100%; /* Make navbar contents full width */
+}
+
+/* Logo styles */
+.logo {
+    flex: 0 0 auto; /* Prevent logo from shrinking */
+}
+
+.logo img {
+    max-width: 100%; /* Adapt image to container width */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Navigation links */
+.nav-links {
+    display: flex; /* Arrange links horizontally */
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+}
+
+.nav-links li {
+    margin-right: 20px; /* Add spacing between links */
+}
+
+.nav-links a {
+    text-decoration: none; /* Remove underline */
+    color: #413f3f; /* Text color */
+    font-weight: bold; /* Emphasize links */
+}
+
+.nav-links a:hover {
+    color: #666; /* Change color on hover */
+    transition: color 0.3s ease; /* Smooth transition */
+}
+
+/* Hamburger menu (responsive) */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none; /* Hide links on smaller screens */
+    }
+
+    .hamburger {
+        display: block; /* Show hamburger menu on smaller screens */
+        cursor: pointer; /* Indicate clickable element */
+    }
+}
+
+/* Hamburger menu styles */
+.hamburger {
+    display: none; /* Initially hidden on larger screens */
+    width: 40px;
+    height: 30px;
+    position: relative;
+}
+
+.bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    margin-bottom: 5px;
+    transition: all 0.3s ease; /* Smooth transitions */
+}
+
+/* Hamburger menu animation */
+.navbar.active .bar:nth-child(1) {
+    transform: translateX(20px) rotate(45deg);
+}
+
+.navbar.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar.active .bar:nth-child(3) {
+    transform: translateX(-20px) rotate(-45deg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.csv-upload-form {
+    display: flex;
+    flex-direction: column; /* Aligns items in a column */
+    justify-content: center; /* Centers items vertically */
+    align-items: flex-end; /* Aligns items to the right */
+    margin-left: auto; /* Pushes the form to the right side */
+    width: fit-content; /* Ensures the form width fits its content */
+}
+
+.csv-upload-form label {
+    margin-bottom: 8px; /* Space between label and file input */
+}
+
+.csv-upload-form input[type="file"] {
+    margin-bottom: 10px; /* Space between file input and submit button */
+}
+
+.csv-upload-form input[type="submit"] {
+    margin-right: 10px;
+    padding: 10px 15px; /* Adds padding to the submit button */
+    background-color: #292929; /* Blue background for the button */
+    color: white; /* White text */
+    border: none; /* Removes default border */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+}
+
+.csv-upload-form input[type="submit"]:hover {
+    background-color: #205812; /* Darker blue on hover */
+}
+
+
+.csv-upload-form label {
+    margin-bottom: 8px; /* Space between label and file input */
+    color: white; /* Set the label color to white */
+}
+
+
+
+.csv-upload-form .upload-label {
+    color: black;
+    text-transform: capitalize;
+    font-size: 15px;
+}
+
+
+
+
+
+.sku-input-form {
+    padding: 30px;
+    margin-top: 60px;
+
+    max-width: 1400px;
+    width: 100%;
+    justify-content: center;
+}
+
+.form-heading {
+    font-size: 28px;
+    font-weight: 700;
+    color: #3b3b3b;
+    text-align: center;
+    margin-bottom: 40px;
+
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 700px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: 300;
+    color: #000000;
+    width: 40%;
+    text-align: center;
+    padding-right: 60px;
+    font-weight: 400;
+}
+
+
+
+
+.input-field {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ccc;
+
+    font-size: 14px;
+    width: 40%; /* Adjust to fit beside label */
+    margin-left: -10px;
+    left: 0;
+}
+
+.price-section-heading {
+    font-size: 20px;
+    color: #f7492b;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 5px;
+}
+
+.submit-button {
+    background-color: #f7492b;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.submit-button:hover {
+    background-color: #5cb85c;
+}
+
+@media screen and (max-width: 768px) {
+    .sku-input-form {
+        padding: 20px;
+    }
+
+    .form-heading {
+        font-size: 20px;
+    }
+
+    .price-section-heading {
+        font-size: 18px;
+    }
+
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-group label {
+        text-align: left;
+        width: 100%;
+        padding-right: 0;
+        margin-bottom: 5px;
+    }
+
+    .input-field {
+        width: 100%;
+    }
+
+    .submit-button {
+        font-size: 14px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.header{
+    color: white;
+    text-align: center;
+    font-size: 600;
+    margin-bottom: 30px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'InterFace', sans-serif; /* Choose a suitable font */
+    border: 1px solid #ccc; /* Add a border around the table */
+    border-radius: 5px; /* Add rounded corners */
+}
+
+.table th {
+    background-color: #4b372f; /* Light gray header background */
+    color: #ffffff;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+}
+
+.table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Alternating row colors */
+}
+.table tr:nth-child(odd) {
+    background-color: #dfdfdf; /* Alternating row colors */
+}
+
+.table tr:hover {
+    background-color: #ffffff; /* Hover effect */
+}
+
+
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+    .data-table th, .data-table td {
+        padding: 5px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .data-table {
+        font-size: 12px;
+    }
+}
