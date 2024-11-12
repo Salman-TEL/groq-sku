@@ -435,3 +435,43 @@ body {
         font-size: 12px;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.view-data-container {
+    display: flex;
+    justify-content: center; /* Align the button to the right */
+    margin-top: 10px; /* Add space above the button */
+}
+
+.view-data-button {
+    display: inline-block;                /* Treat the link as a block for better styling */
+    padding: 10px 20px;                  /* Add some padding */
+    background-color: #000000;           /* Black color */
+    color: white;                         /* Text color */
+    text-decoration: none;                /* Remove underline */
+    font-size: 16px;                      /* Font size */
+    border-radius: 5px;                  /* Rounded corners */
+    transition: background-color 0.3s;   /* Smooth background transition */
+}
+
+.view-data-button:hover {
+    background-color: #000307;           /* Darker color on hover */
+}

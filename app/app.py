@@ -1,4 +1,5 @@
 import csv
+import io
 import os
 import urllib.parse as urlparse
 import requests
@@ -10,6 +11,16 @@ import pandas as pd  # Ensure pandas is imported
 import logging
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your_secret_key')  # Use an environment variable for secret key
+
+
+
+app.debug = True
+app.run(debug=True)
+
+
+
+
+
 
 # Constants for Google OAuth
 CLIENT_ID = os.environ.get('CLIENT_ID')  # Your CLIENT_ID
@@ -116,175 +127,7 @@ def index():
 # Load the Groq API key
 GROQ_API_KEY = os.getenv('GROQ_API_KEY', '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')
 
-# def format_checked_spelling(corrected_text):
-#     """Formats the corrected spelling into a readable format."""
-#     formatted_texts = []
-    
-#     # Split the corrected text into individual notes (if you expect multiple notes)
-#     notes = [note.strip() for note in corrected_text.splitlines() if note.strip()]  # Split by lines and remove empty lines
-    
-#     print("Original Notes:", notes)  # Debugging line to see the original notes
 
-#     for note in notes:
-#         # Check if the note is a string and strip whitespace
-#         if isinstance(note, str):
-#             note = note.strip()
-#             if note:  # If not an empty line
-#                 # Replace 'and' with '&' to match the requested format
-#                 note = note.replace(' and ', ' & ')
-                
-#                 # Further customize how we want to format each note
-#                 formatted_note = note.capitalize() + '.'  # Capitalize and add a period at the end
-                
-#                 # Print the formatted note for debugging
-#                 print(f"Formatted Note: {formatted_note}")  # Debugging line
-                
-#                 formatted_texts.append(formatted_note)
-#             else:
-#                 formatted_texts.append('')  # Maintain blank lines as is
-#         else:
-#             formatted_texts.append('')  # Append empty if not a string (like NaN)
-
-#     print("Final Formatted Texts:", formatted_texts)  # Debugging line to see final formatted texts
-#     return formatted_texts
-
-
-# def check_spelling(text):
-#     """Function to check spelling using Groq API."""
-#     try:
-#         print(f"Requesting spelling correction for: {text}")  # Debugging line
-        
-#         # Prepare the refined prompt for the API request
-#         prompt = f"Please correct the spelling of the following list items text. In your response, only provide the corrected spelling. If the spelling is already corrected items, simply return the original text without any changes (important :no other response required , dont add any other response .): '{text}'."
-
-#         # Send request to Groq API
-#         response = requests.post(
-#             'https://api.groq.com/openai/v1/chat/completions',
-#             headers={
-#                 'Authorization': f'Bearer {GROQ_API_KEY}',
-#                 'Content-Type': 'application/json'
-#             },
-#             json={
-#                 "model": "llama3-groq-8b-8192-tool-use-preview",
-#                 "messages": [{"role": "user", "content": prompt}]
-#             }
-#         )
-
-#         print(f"API Status Code: {response.status_code}")  # Debugging line
-#         print(f"API Response JSON: {response.json() if response.content else 'No Content'}", flush=True)
-
-#         if response.status_code == 200:
-#             result = response.json()
-#             corrected_text = result.get("choices", [{}])[0].get("message", {}).get("content", text)  # Extract the corrected text
-            
-#             # Directly format the corrected text
-#             formatted_texts = []
-#             notes = [note.strip() for note in corrected_text.splitlines() if note.strip()]  # Split by lines and remove empty lines
-            
-#             print("Original Notes:", notes)  # Debugging line to see the original notes
-
-#             for note in notes:
-#                 if isinstance(note, str):
-#                     note = note.strip()
-#                     if note:  # If not an empty line
-#                         note = note.replace(' and ', ' & ')  # Replace 'and' with '&'
-#                         formatted_note = note.capitalize() + '.'  # Capitalize and add a period
-#                         print(f"Formatted Note: {formatted_note}")  # Debugging line
-#                         formatted_texts.append(formatted_note)
-#                     else:
-#                         formatted_texts.append('')  # Maintain blank lines as is
-#                 else:
-#                     formatted_texts.append('')  # Append empty if not a string
-
-#             print("Final Formatted Texts:", formatted_texts)  # Debugging line to see final formatted texts
-            
-#             # Print the formatted text
-#             for formatted_note in formatted_texts:
-#                 print(formatted_note)
-                
-#             return formatted_texts  # Return formatted texts if needed
-#         else:
-#             # If API error occurs, return the original text formatted
-#             formatted_texts = []
-#             notes = [note.strip() for note in text.splitlines() if note.strip()]  # Split by lines and remove empty lines
-            
-#             for note in notes:
-#                 if isinstance(note, str):
-#                     note = note.strip()
-#                     if note:
-#                         note = note.replace(' and ', ' & ')
-#                         formatted_note = note.capitalize() + '.'
-#                         formatted_texts.append(formatted_note)
-#                     else:
-#                         formatted_texts.append('')
-#                 else:
-#                     formatted_texts.append('')
-
-#             for formatted_note in formatted_texts:
-#                 print(formatted_note)
-                
-#             return formatted_texts
-#     except Exception as e:
-#         print(f"Error with Groq API: {e}")
-#         formatted_texts = []
-#         notes = [note.strip() for note in text.splitlines() if note.strip()]  # Split by lines and remove empty lines
-        
-#         for note in notes:
-#             if isinstance(note, str):
-#                 note = note.strip()
-#                 if note:
-#                     note = note.replace(' and ', ' & ')
-#                     formatted_note = note.capitalize() + '.'
-#                     formatted_texts.append(formatted_note)
-#                 else:
-#                     formatted_texts.append('')
-#             else:
-#                 formatted_texts.append('')
-
-#         for formatted_note in formatted_texts:
-#             print(formatted_note)
-        
-#         return formatted_texts  # Return formatted original text if an exception occurs
-
-
-
-
-
-# def check_spelling(text):
-#     """Function to check spelling using Groq API."""
-#     try:
-#         print(f"Requesting spelling correction for: {text}")  # Debugging line
-        
-#         # Define a prompt that specifies the required output
-#         # prompt = f"Correct the spelling in the following text and return only the corrected text: '{text}'. No additional responses."
-#     # Prepare the refined prompt for the API request
-#         # prompt = f"Please correct the spelling of the following text. In your response, only provide the corrected spelling. If the spelling is already correct, simply return the original text without any changes : '{text}'."
-#         prompt = f"Please correct the spelling of the following list items text. In your response, only provide the corrected spelling. If the spelling is already corrected items, simply return the original text without any changes (important :no other response required , dont add any other response or characters.): '{text}'."
-
-#         # Send request to Groq API  
-#         response = requests.post(
-#             'https://api.groq.com/openai/v1/chat/completions',
-#             headers={
-#                 'Authorization': f'Bearer {GROQ_API_KEY}',
-#                 'Content-Type': 'application/json'
-#             },
-#             json={
-#                 "model": "llama3-groq-8b-8192-tool-use-preview",
-#                 "messages": [{"role": "user", "content": prompt}]
-#             }
-#         )
-
-#         print(f"API Status Code: {response.status_code}")  # Debugging line
-#         print(f"API Response JSON: {response.json() if response.content else 'No Content'}", flush=True)
-
-#         if response.status_code == 200:
-#             result = response.json()
-#             return result.get("choices", [{}])[0].get("message", {}).get("content", text)  # Extract the corrected text
-#         else:
-#             return text  # Return original text if API error occurs
-#     except Exception as e:
-#         print(f"Error with Groq API: {e}")
-#         return text  # Return original text if an exception occurs
 
 
 
@@ -295,12 +138,14 @@ def check_spelling(text):
         print(f"Requesting spelling correction for: '{text}'")  # Debugging line
         
         prompt = (
-            f"Please correct the spelling of the following list items text. "
-            f"In your response, only provide the corrected spelling. "
-            f"If the spelling is already correct, simply return the original text without any changes. "
-            f"(Important: no other response required, don't add any other response or characters and also dont change the format): '{text}'."
+            f"Correct only the spelling in the following comma-separated list of items. "
+            f"Rules: "
+            f"1) Only correct spelling without changing structure, punctuation, or spacing. "
+            f"2) Do not add any comments, explanations, or additional text. "
+            f"3) Return only the corrected text as a comma-separated list exactly as shown in the input. "
+            f"4) If all words are spelled correctly, return them exactly as they appear. "
+            f"Text: '{text}'."
         )
-
         # Send request to Groq API  
         response = requests.post(
             'https://api.groq.com/openai/v1/chat/completions',
@@ -420,8 +265,11 @@ def submit_form():
     # Run the spelling check on the joined string
     corrected_tasting_notes_str = check_spelling(tasting_notes_str)
 
-    # Convert the corrected string back to a list and capitalize each item
-    corrected_tasting_notes_list = [note.strip().capitalize() for note in corrected_tasting_notes_str.split(',')]
+    # Log the output for debugging
+    print("Corrected Tasting Notes String:", corrected_tasting_notes_str)  # Debug print
+
+    # Convert the corrected string back to a list
+    corrected_tasting_notes_list = [note.strip().title() for note in corrected_tasting_notes_str.split(',')]
 
     # Format tasting notes with ' & ' before the last item
     if len(corrected_tasting_notes_list) > 1:
@@ -576,6 +424,295 @@ def submit_form():
 
     flash('Form submitted successfully!')  # Flash a success message
     return redirect(url_for('index'))  # Redirect back to the index page
+
+
+
+
+
+@app.route('/view_data')
+def view_data():
+    try:
+        # Load data from CSV
+        df = pd.read_csv('data.csv')
+        
+        # Convert DataFrame to HTML
+        data_html = df.to_html(classes='table table-striped', index=False)  # Use Bootstrap classes for styling
+    except FileNotFoundError:
+        data_html = "<p>No data found. Please submit the form first.</p>"
+    except Exception as e:
+        data_html = f"<p>Error reading data: {str(e)}</p>"
+
+    return render_template('view_data.html', data_html=data_html)
+
+
+
+
+
+
+
+# Define the column mapping from uploaded CSV to data.csv
+COLUMN_MAPPING = {
+    'Production Date': 'production_date',
+    'CODE': 'code',
+    'Green Coffee Name': 'green_coffee_name',
+    'TEL NAME': 'tel_name',
+    'Origin': 'origin',
+    'Producer': 'producer',
+    'Process': 'process',
+    'Elevation': 'elevation',
+    'Region': 'region',
+    'Variety': 'variety',
+    'Tasting Notes': 'tasting_notes',
+    'Tags': 'tags',
+    '2Lb Filter Wholesale Price': 'filter_wholesale_price_2lb',
+    '2Lb Espresso Wholesale Price': 'espresso_wholesale_price_2lb',
+    '8oz Filter Wholesale Price': 'filter_wholesale_price_8oz',
+    '8oz Espresso Wholesale Price': 'espresso_wholesale_price_8oz',
+    '8oz Filter Retail Price': 'filter_retail_price_8oz',
+    '8oz Espresso Retail Price': 'espresso_retail_price_8oz',
+    '8oz Retail WITH BOX Price': 'retail_with_box_price_8oz',
+    '40gr Jar WITH BOX Price': 'jar_with_box_price_40gr',
+    '40gr Jar Normal Price': 'jar_normal_price_40gr',
+    '100 grams Price': 'price_100g'
+}
+
+# Set the directory for uploaded files
+UPLOAD_FOLDER = 'uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure the uploads directory exists
+
+@app.route('/upload-csv', methods=['GET', 'POST'])
+def upload_csv():
+    if request.method == 'POST':
+        logging.debug("Debug: POST request received.")
+        
+        if 'file-upload' not in request.files:
+            flash('No file part')
+            logging.debug("Debug: 'file-upload' not found in request files.")
+            return redirect(request.url)
+        
+        file = request.files['file-upload']
+        
+        if file.filename == '':
+            flash('No selected file')
+            logging.debug("Debug: File selected is empty.")
+            return redirect(request.url)
+        
+        if file and file.filename.lower().endswith('.csv'):
+            try:
+                # Read and decode CSV content
+                file_content = file.read().decode("utf-8")
+                logging.debug("Debug: File content read successfully.")
+                
+                data = pd.read_csv(io.StringIO(file_content))
+                logging.debug(f"Debug: CSV loaded into DataFrame: {data.head()}")  # Show first few rows for verification
+                
+                # Strip whitespace from columns
+                data.columns = data.columns.str.strip()
+                
+                # Rename columns based on COLUMN_MAPPING
+                data.rename(columns=COLUMN_MAPPING, inplace=True)
+                logging.debug(f"Debug: Columns after renaming: {data.columns.tolist()}")
+                
+                # Check for missing columns
+                required_columns = list(COLUMN_MAPPING.values())
+                missing_columns = [col for col in required_columns if col not in data.columns]
+                
+                if missing_columns:
+                    flash(f'Missing required columns in CSV: {", ".join(missing_columns)}')
+                    logging.debug(f"Debug: Missing required columns: {missing_columns}")
+                else:
+                    logging.debug("Debug: All required columns are present.")
+                
+                # Pass the DataFrame to display template
+                session['columns'] = data.columns.tolist()
+                logging.debug("Debug: Rendering display_csv.html with data.")
+                return render_template('display_csv.html', data=data)
+
+            except Exception as e:
+                flash(f'Error reading CSV file: {str(e)}')
+                logging.debug(f"Debug: Exception during CSV processing: {e}")
+                return redirect(request.url)
+        else:
+            flash('Please upload a valid CSV file')
+            logging.debug("Debug: Invalid file type. Only CSV files are accepted.")
+            return redirect(request.url)
+
+    # Render upload form on GET request
+    logging.debug("Debug: GET request for /upload-csv")
+    return render_template('form.html')
+
+
+
+
+
+
+
+
+@app.route('/save-csv', methods=['POST'])
+def save_csv():
+    form_data = request.form.getlist('data')
+
+    # Retrieve column names from session
+    columns = session.get('columns')
+    if not columns:
+        flash('Session expired or column data unavailable. Please re-upload the file.')
+        return redirect(url_for('upload_csv'))
+
+    # Reshape the form data and create a DataFrame
+    num_columns = len(columns)
+    reshaped_data = [form_data[i:i + num_columns] for i in range(0, len(form_data), num_columns)]
+    uploaded_data = pd.DataFrame(reshaped_data, columns=columns)
+
+    # Check for missing or empty values
+    if uploaded_data.isnull().values.any() or (uploaded_data == "").values.any():
+        flash('All fields are required. Please fill in all fields before saving.')
+        return redirect(url_for('upload_csv'))
+    
+    # Format elevation values
+    uploaded_data['elevation'] = uploaded_data['elevation'].apply(format_elevation)
+
+    # Correct tasting notes format and spelling
+    def correct_tasting_notes(tasting_notes):
+        # Process tasting notes as a list
+        tasting_notes_list = [note.strip() for note in tasting_notes.strip("'\"").split(',')]
+        tasting_notes_str = ', '.join(tasting_notes_list)  # Convert list to a single string
+        
+        # Run spelling correction on the string
+        corrected_notes_str = check_spelling(tasting_notes_str)
+
+        # Convert corrected string back to list and title-case each note
+        corrected_notes_list = [note.strip().title() for note in corrected_notes_str.split(',')]
+
+        # Format with ' & ' before the last item if more than one note
+        if len(corrected_notes_list) > 1:
+            formatted_notes = ', '.join(corrected_notes_list[:-1]) + ' & ' + corrected_notes_list[-1]
+        else:
+            formatted_notes = corrected_notes_list[0] if corrected_notes_list else ''
+        
+        return formatted_notes
+
+    # Apply the correct_tasting_notes function to the 'tasting_notes' column
+    uploaded_data['tasting_notes'] = uploaded_data['tasting_notes'].apply(correct_tasting_notes)
+
+    # Load existing data from CSV for duplicate checking and SKU generation
+    try:
+        existing_data = pd.read_csv('data.csv')
+    except FileNotFoundError:
+        existing_data = pd.DataFrame()
+
+    # Add new columns to existing data if they do not exist
+    for col in ['SKU', 'DESCRIPTION', 'CATEGORY', 'SUB-CATEGORY', 'TYPE', 'SIZE']:
+        if col not in existing_data.columns:
+            existing_data[col] = ""
+
+    # Check for duplicates based on 'code'
+    duplicate_codes = uploaded_data['code'].isin(existing_data['code'])
+    if duplicate_codes.any():
+        flash('Duplicate data found based on CODE. Please ensure each entry has a unique CODE.')
+        return redirect(url_for('upload_csv'))
+
+    # Expand rows based on variations and generate SKUs for each
+    expanded_rows = []
+    last_serial = existing_data['SKU'].apply(lambda x: int(x.split('-')[-1]) if isinstance(x, str) and '-' in x else 0).max()
+    variations = [
+        ('2Lb. Filter', 'Coffee', 'Wholesale', 'Filter', '2Lb'),
+        ('2Lb. Espresso', 'Coffee', 'Wholesale', 'Espresso', '2Lb'),
+        ('8oz. Filter', 'Coffee', 'Retail', 'Filter', '8oz'),
+        ('8oz. Espresso', 'Coffee', 'Retail', 'Espresso', '8oz'),
+        ('8oz. Exclusive', 'Coffee', 'Retail', 'Filter', '8oz'),
+        ('Drip Bags', 'Coffee', 'Retail', 'Drip', '163g'),
+        ('40g Jar Exclusive', 'Coffee', 'Retail', 'Filter', '40g'),
+        ('40g Jar Plain', 'Coffee', 'Retail', 'Filter', '40g'),
+        ('100g Filter', 'Coffee', 'Retail', 'Filter', '100g'),
+        ('100g Espresso', 'Coffee', 'Retail', 'Espresso', '100g')
+    ]
+
+    for _, row in uploaded_data.iterrows():
+        for description, category, sub_category, type_, size in variations:
+            # Generate SKU
+            sku_elements = [
+                str(row['code']) if not pd.isna(row['code']) else 'x',
+                str(row['tel_name'])[0] if not pd.isna(row['tel_name']) else 'x',
+                str(row['origin'])[0] if not pd.isna(row['origin']) else 'x',
+                description[0],
+                category[0],
+                type_[0],
+                size[0]
+            ]
+
+            last_serial += 1
+            sku = "{}-{}-{:05}".format(sku_elements[0], ''.join(sku_elements[1:]), last_serial)
+
+            # Prepare expanded row data
+            new_row = row.copy()
+            new_row['SKU'] = sku
+            new_row['DESCRIPTION'] = description
+            new_row['CATEGORY'] = category
+            new_row['SUB-CATEGORY'] = sub_category
+            new_row['TYPE'] = type_
+            new_row['SIZE'] = size
+
+            # Map price columns to variations
+            price_col = None
+            if description.startswith("2Lb") and 'Filter' in description:
+                price_col = 'filter_wholesale_price_2lb'
+            elif description.startswith("2Lb") and 'Espresso' in description:
+                price_col = 'espresso_wholesale_price_2lb'
+            elif description.startswith("8oz") and 'Filter' in description:
+                price_col = 'filter_wholesale_price_8oz'
+            elif description.startswith("8oz") and 'Espresso' in description:
+                price_col = 'espresso_wholesale_price_8oz'
+            elif 'Exclusive' in description:
+                price_col = 'retail_with_box_price_8oz' if '8oz' in description else 'jar_with_box_price_40gr'
+            elif 'Plain' in description:
+                price_col = 'jar_normal_price_40gr'
+            elif '100g' in description:
+                price_col = 'price_100g'
+
+            new_row['PRICE'] = row[price_col] if price_col and pd.notna(row[price_col]) and float(row[price_col]) > 0 else ''
+
+            expanded_rows.append(new_row)
+
+    # Append expanded rows to existing data and save
+    expanded_data = pd.DataFrame(expanded_rows)
+    combined_data = pd.concat([existing_data, expanded_data], ignore_index=True)
+
+    try:
+        combined_data.to_csv('data.csv', mode='w', header=True, index=False)
+        flash('CSV file processed successfully!')
+        logging.debug("Debug: Data saved to data.csv successfully.")
+    except Exception as e:
+        flash(f'Error saving CSV file: {str(e)}')
+        logging.error(f"Error saving CSV file: {str(e)}")
+
+    return redirect(url_for('view_data'))
+
+
+
+
+@app.route('/save-edits', methods=['POST'])
+def save_edits():
+    try:
+        # Get edited data from the request
+        edited_data = request.json.get('data', [])
+        
+        # Load your existing data to determine the column names
+        existing_df = pd.read_csv('/app/data.csv')
+        column_names = existing_df.columns.tolist()
+        
+        # Convert the edited data to a DataFrame with the correct columns
+        df = pd.DataFrame(edited_data, columns=column_names)
+        
+        # Save the edited DataFrame back to `data.csv`
+        df.to_csv('/app/data.csv', index=False)
+        
+        return jsonify({'message': 'Changes saved successfully!'})
+    except Exception as e:
+        print(f"Error saving changes: {e}")
+        return jsonify({'message': 'Error saving changes.'}), 500
+
+
+
 
 
 
