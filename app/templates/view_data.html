@@ -229,6 +229,7 @@
             <div class="save-btn">
                 <button id="saveButton">Save Changes</button>
             </div>
+            
         </div>
     </div>
 
@@ -271,34 +272,43 @@
             });
         });
     
-        // Gather edited data and send to the server
+        // Gather edited data and send to the server with confirmation
         document.getElementById('saveButton').addEventListener('click', () => {
-            const rows = document.querySelectorAll('table tbody tr');
-            const data = [];
+            // Show confirmation dialog before saving
+            const userConfirmed = confirm("Are you sure you want to save the changes?");
+            
+            if (userConfirmed) {
+                const rows = document.querySelectorAll('table tbody tr');
+                const data = [];
     
-            rows.forEach(row => {
-                const rowData = [];
-                row.querySelectorAll('td').forEach(cell => {
-                    rowData.push(cell.textContent.trim());
+                rows.forEach(row => {
+                    const rowData = [];
+                    row.querySelectorAll('td').forEach(cell => {
+                        rowData.push(cell.textContent.trim());
+                    });
+                    data.push(rowData);
                 });
-                data.push(rowData);
-            });
     
-            fetch('/save-edits', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ data })
-            })
-            .then(response => response.json())
-            .then(result => {
-                alert(result.message);
-            })
-            .catch(error => {
-                console.error('Error saving edits:', error);
-                alert('Failed to save changes.');
-            });
+                // Send the edited data to the backend
+                fetch('/save-edits', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    alert(result.message);
+                })
+                .catch(error => {
+                    console.error('Error saving edits:', error);
+                    alert('Failed to save changes.');
+                });
+            } else {
+                // If the user cancels, no action is taken
+                console.log('Save operation cancelled');
+            }
         });
     </script>
 </body>
