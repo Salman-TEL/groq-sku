@@ -197,12 +197,40 @@ def format_elevation(elevation):
     return elevation
 
 
+
+
+
+def get_next_code(df):
+    # Retrieve the last code from the DataFrame
+    if 'code' not in df.columns or df.empty:
+        return 'A01'  # Start from A01 if no codes exist
+
+    last_code = df['code'].max()  # Get the latest code from the DataFrame
+    last_prefix = last_code[:-2]  # All except the last two characters
+    last_number = int(last_code[-2:])  # Last two digits as a number
+
+    if last_number < 99:  # If the number is less than 99, increment the last two digits
+        next_number = last_number + 1
+        next_code = f"{last_prefix}{next_number:02d}"  # Format to maintain 2 digits
+    else:  # If number reaches 99, move to the next letter in the prefix (i.e., A to B)
+        if last_prefix == 'Z':  # If it's already Z, no further code can be generated
+            raise ValueError("No more codes can be generated.")
+        next_prefix = chr(ord(last_prefix[0]) + 1)  # Increment the first letter of the prefix
+        next_code = f"{next_prefix}01"  # Reset the number part to 01 after changing the prefix
+
+    return next_code
+
+
+
+
+
+
+
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
     # Collecting data from the form
     data = {
         'production_date': request.form.get('production_date'),
-        'code': request.form.get('code'),
         'green_coffee_name': request.form.get('green_coffee_name'),
         'tel_name': request.form.get('tel_name'),
         'origin': request.form.get('origin'),
@@ -227,14 +255,44 @@ def submit_form():
     
     print("Collected Data:", data)  # Debug print
 
-    # Create a DataFrame from the collected form data
-    form_df = pd.DataFrame([data])
 
     # Load existing data from CSV or create an empty DataFrame if the file doesn't exist
     try:
         df = pd.read_csv('data.csv')
     except FileNotFoundError:
         df = pd.DataFrame()  # Create an empty DataFrame if the file does not exist
+
+
+    # Generate the next code using the get_next_code function
+    try:
+        new_code = get_next_code(df)
+        data['code'] = new_code  # Assign the generated code to the data
+    except ValueError as e:
+        flash(str(e), 'error')
+        return redirect(url_for('index'))
+
+
+
+    # Create a DataFrame from the collected form data
+    form_df = pd.DataFrame([data])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -453,7 +511,6 @@ def view_data():
 # Define the column mapping from uploaded CSV to data.csv
 COLUMN_MAPPING = {
     'Production Date': 'production_date',
-    'CODE': 'code',
     'Green Coffee Name': 'green_coffee_name',
     'TEL NAME': 'tel_name',
     'Origin': 'origin',
@@ -539,7 +596,7 @@ def upload_csv():
 
     # Render upload form on GET request
     logging.debug("Debug: GET request for /upload-csv")
-    return render_template('form.html')
+    return render_template('display_csv.html')
 
 
 
@@ -573,23 +630,11 @@ def save_csv():
 
     # Correct tasting notes format and spelling
     def correct_tasting_notes(tasting_notes):
-        # Process tasting notes as a list
         tasting_notes_list = [note.strip() for note in tasting_notes.strip("'\"").split(',')]
         tasting_notes_str = ', '.join(tasting_notes_list)  # Convert list to a single string
-        
-        # Run spelling correction on the string
         corrected_notes_str = check_spelling(tasting_notes_str)
-
-        # Convert corrected string back to list and title-case each note
         corrected_notes_list = [note.strip().title() for note in corrected_notes_str.split(',')]
-
-        # Format with ' & ' before the last item if more than one note
-        if len(corrected_notes_list) > 1:
-            formatted_notes = ', '.join(corrected_notes_list[:-1]) + ' & ' + corrected_notes_list[-1]
-        else:
-            formatted_notes = corrected_notes_list[0] if corrected_notes_list else ''
-        
-        return formatted_notes
+        return ', '.join(corrected_notes_list[:-1]) + ' & ' + corrected_notes_list[-1] if len(corrected_notes_list) > 1 else corrected_notes_list[0]
 
     # Apply the correct_tasting_notes function to the 'tasting_notes' column
     uploaded_data['tasting_notes'] = uploaded_data['tasting_notes'].apply(correct_tasting_notes)
@@ -605,11 +650,18 @@ def save_csv():
         if col not in existing_data.columns:
             existing_data[col] = ""
 
-    # Check for duplicates based on 'code'
-    duplicate_codes = uploaded_data['code'].isin(existing_data['code'])
-    if duplicate_codes.any():
-        flash('Duplicate data found based on CODE. Please ensure each entry has a unique CODE.')
-        return redirect(url_for('upload_csv'))
+    # Ensure 'code' column exists in uploaded_data
+    if 'code' not in uploaded_data.columns:
+        uploaded_data['code'] = None
+
+    # Generate 'code' for any rows without it
+    def generate_code_if_missing(row):
+        if pd.isna(row['code']) or row['code'] == "":
+            row['code'] = get_next_code(existing_data)  # Generate code using existing_data
+        return row
+
+    # Apply code generation to rows without a 'code'
+    uploaded_data = uploaded_data.apply(generate_code_if_missing, axis=1)
 
     # Expand rows based on variations and generate SKUs for each
     expanded_rows = []
@@ -639,7 +691,6 @@ def save_csv():
                 type_[0],
                 size[0]
             ]
-
             last_serial += 1
             sku = "{}-{}-{:05}".format(sku_elements[0], ''.join(sku_elements[1:]), last_serial)
 
@@ -686,6 +737,27 @@ def save_csv():
         logging.error(f"Error saving CSV file: {str(e)}")
 
     return redirect(url_for('view_data'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
