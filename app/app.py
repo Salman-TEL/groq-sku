@@ -1,7 +1,10 @@
 import csv
+import datetime
 import io
 import os
 import urllib.parse as urlparse
+from flask_mail import Mail, Message
+import pytz
 import requests
 from google.oauth2 import service_account
 from flask import Flask, flash, jsonify, redirect, request, url_for, session, render_template
@@ -9,6 +12,8 @@ import gspread
 import re 
 import pandas as pd  # Ensure pandas is imported
 import logging
+from datetime import datetime
+
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your_secret_key')  # Use an environment variable for secret key
 
@@ -16,6 +21,31 @@ app.secret_key = os.environ.get('SECRET_KEY', 'your_secret_key')  # Use an envir
 
 app.debug = True
 app.run(debug=True)
+
+
+
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Replace with your mail server
+app.config['MAIL_PORT'] = 465  # or 587 for TLS
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'salmanul.faris@theespressolab.com'  # Your email
+app.config['MAIL_PASSWORD'] = 'ziwo kukz iaqj dxko' #app password
+app.config['MAIL_DEFAULT_SENDER'] = 'salmanbadharudheen22@gmail.com'
+
+mail = Mail(app)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -226,6 +256,277 @@ def get_next_code(df):
 
 
 
+# @app.route('/submit_form', methods=['POST'])
+# def submit_form():
+#     # Collecting data from the form
+#     data = {
+#         'production_date': request.form.get('production_date'),
+#         'green_coffee_name': request.form.get('green_coffee_name'),
+#         'tel_name': request.form.get('tel_name'),
+#         'origin': request.form.get('origin'),
+#         'producer': request.form.get('producer'),
+#         'process': request.form.get('process'),
+#         'elevation': format_elevation(request.form.get('elevation')),
+#         'region': request.form.get('region'),
+#         'variety': request.form.get('variety'),
+#         'tasting_notes': request.form.get('tasting_notes'),
+#         'tags': request.form.get('tags'),
+#         'filter_wholesale_price_2lb': request.form.get('filter_wholesale_price_2lb'),
+#         'espresso_wholesale_price_2lb': request.form.get('espresso_wholesale_price_2lb'),
+#         'filter_wholesale_price_8oz': request.form.get('filter_wholesale_price_8oz'),
+#         'espresso_wholesale_price_8oz': request.form.get('espresso_wholesale_price_8oz'),
+#         'filter_retail_price_8oz': request.form.get('filter_retail_price_8oz'),
+#         'espresso_retail_price_8oz': request.form.get('espresso_retail_price_8oz'),
+#         'retail_with_box_price_8oz': request.form.get('retail_with_box_price_8oz'),
+#         'jar_with_box_price_40gr': request.form.get('jar_with_box_price_40gr'),
+#         'jar_normal_price_40gr': request.form.get('jar_normal_price_40gr'),
+#         'price_100g': request.form.get('price_100g')
+#     }
+    
+#     print("Collected Data:", data)  # Debug print
+
+
+#     # Load existing data from CSV or create an empty DataFrame if the file doesn't exist
+#     try:
+#         df = pd.read_csv('data.csv')
+#     except FileNotFoundError:
+#         df = pd.DataFrame()  # Create an empty DataFrame if the file does not exist
+
+
+#     # Generate the next code using the get_next_code function
+#     try:
+#         new_code = get_next_code(df)
+#         data['code'] = new_code  # Assign the generated code to the data
+#     except ValueError as e:
+#         flash(str(e), 'error')
+#         return redirect(url_for('index'))
+
+
+
+#     # Create a DataFrame from the collected form data
+#     form_df = pd.DataFrame([data])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#     # Add new columns if they do not exist in the DataFrame
+#     new_columns = ['SKU', 'DESCRIPTION', 'CATEGORY', 'SUB-CATEGORY', 'TYPE', 'SIZE']
+#     for col in new_columns:
+#         if col not in df.columns:
+#             df[col] = ""  # Initialize new columns with empty strings
+
+#     # Check for duplicates based on 'code'
+#     if not df[df['code'] == data['code']].empty:
+#         flash('Data with this code already exists. Please use a different code.', 'error')
+#         return redirect(url_for('index'))
+
+
+
+
+
+
+    
+#     # Process tasting notes as a list initially
+#     tasting_notes = request.form.get('tasting_notes')
+#     tasting_notes_list = [note.strip() for note in tasting_notes.strip("'\"").split(',')]
+#     tasting_notes_str = ', '.join(tasting_notes_list)  # Convert list to a single string
+
+#     # Run the spelling check on the joined string
+#     corrected_tasting_notes_str = check_spelling(tasting_notes_str)
+
+#     # Log the output for debugging
+#     print("Corrected Tasting Notes String:", corrected_tasting_notes_str)  # Debug print
+
+#     # Convert the corrected string back to a list
+#     corrected_tasting_notes_list = [note.strip().title() for note in corrected_tasting_notes_str.split(',')]
+
+#     # Format tasting notes with ' & ' before the last item
+#     if len(corrected_tasting_notes_list) > 1:
+#         formatted_tasting_notes = ', '.join(corrected_tasting_notes_list[:-1]) + ' & ' + corrected_tasting_notes_list[-1]
+#     else:
+#         formatted_tasting_notes = corrected_tasting_notes_list[0] if corrected_tasting_notes_list else ''
+
+#     # Assign the formatted notes back to `data` and `form_df` for CSV storage
+#     data['tasting_notes'] = corrected_tasting_notes_list
+#     form_df['tasting_notes'] = formatted_tasting_notes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#     # Prepare to expand rows based on variations
+#     expanded_rows = []
+#     last_serial = df['SKU'].apply(lambda x: int(x.split('-')[-1]) if isinstance(x, str) and '-' in x else 0).max()
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#     # Mapping of price columns to variations
+#     price_mapping = {
+#         "filter_wholesale_price_2lb": ('2Lb. Filter', 'Coffee', 'Wholesale'),
+#         "espresso_wholesale_price_2lb": ('2Lb. Espresso', 'Coffee', 'Wholesale'),
+#         "filter_wholesale_price_8oz": ('8oz. Filter', 'Coffee', 'Wholesale'),
+#         "espresso_wholesale_price_8oz": ('8oz. Espresso', 'Coffee', 'Wholesale'),
+#         "filter_retail_price_8oz": ('8oz. Filter', 'Coffee', 'Retail'),
+#         "espresso_retail_price_8oz": ('8oz. Espresso', 'Coffee', 'Retail'),
+#         "retail_with_box_price_8oz": ('8oz. Exclusive', 'Coffee', 'Retail'),
+#         "jar_with_box_price_40gr": ('40g Jar Exclusive', 'Coffee', 'Retail'),
+#         "jar_normal_price_40gr": ('40g Jar Plain', 'Coffee', 'Retail'),
+#         "price_100g": ('100g Filter', 'Coffee', 'Retail')
+#     }
+
+#     # Variations for each CODE
+#     variations = [
+#         ('2Lb. Filter', 'Coffee', 'Wholesale', 'Filter', '2Lb'),
+#         ('2Lb. Espresso', 'Coffee', 'Wholesale', 'Espresso', '2Lb'),
+#         ('8oz. Filter', 'Coffee', 'Retail', 'Filter', '8oz'),
+#         ('8oz. Espresso', 'Coffee', 'Retail', 'Espresso', '8oz'),
+#         ('8oz. Exclusive', 'Coffee', 'Retail', 'Filter', '8oz'),
+#         ('Drip Bags', 'Coffee', 'Retail', 'Drip', '163g'),
+#         ('40g Jar Exclusive', 'Coffee', 'Retail', 'Filter', '40g'),
+#         ('40g Jar Plain', 'Coffee', 'Retail', 'Filter', '40g'),
+#         ('100g Filter', 'Coffee', 'Retail', 'Filter', '100g'),
+#         ('100g Espresso', 'Coffee', 'Retail', 'Espresso', '100g')
+#     ]
+
+#     # Process each row of form data for variations
+#     for index, row in form_df.iterrows():
+#         for variation in variations:
+#             description, category, sub_category, type_, size = variation
+
+#             # Construct the SKU
+#             sku_elements = [
+#                 str(row['code']) if not pd.isna(row['code']) else 'x',
+#                 str(row['tel_name'])[0] if not pd.isna(row['tel_name']) else 'x',
+#                 str(row['origin'])[0] if not pd.isna(row['origin']) else 'x',
+#                 description[0],
+#                 category[0],
+#                 type_[0],
+#                 size[0]
+#             ]
+
+#             last_serial += 1
+#             sku = "{}-{}-{:05}".format(sku_elements[0], ''.join(sku_elements[1:]), last_serial)
+
+#             # Create a new row based on the current row, but with variations
+#             new_row = row.copy()
+#             new_row['SKU'] = sku
+#             new_row['DESCRIPTION'] = description
+#             new_row['CATEGORY'] = category
+#             new_row['SUB-CATEGORY'] = sub_category
+#             new_row['TYPE'] = type_
+#             new_row['SIZE'] = size
+
+#             # Check for price and add it to the new row
+#             price = ''
+#             for price_col, price_variation in price_mapping.items():
+#                 if price_variation[0] == description and price_variation[1:] == (category, sub_category):
+#                     price_value = form_df.loc[index, price_col]
+#                     if pd.notna(price_value) and float(price_value) > 0:
+#                         price = price_value
+#                     break
+
+#             # Special cases for '100g' and '40g Jar' variations
+#             if (description, category, sub_category) in [('100g Espresso', 'Coffee', 'Retail'),
+#                                                          ('40g Jar Exclusive', 'Coffee', 'Retail'),
+#                                                          ('40g Jar Plain', 'Coffee', 'Retail')]:
+#                 if description.startswith('100g'):
+#                     price_col = "price_100g"
+#                 elif 'Exclusive' in description:
+#                     price_col = "jar_with_box_price_40gr"
+#                 else:
+#                     price_col = "jar_normal_price_40gr"
+
+#                 price_value = form_df.loc[index, price_col]
+#                 if pd.notna(price_value) and float(price_value) > 0:
+#                     price = price_value
+
+#             new_row['PRICE'] = price  # Add price to the new row
+#             expanded_rows.append(new_row)  # Append the new row to expanded rows list
+
+#     # Create a new DataFrame from the expanded rows
+#     expanded_df = pd.DataFrame(expanded_rows)
+
+#     # Append new form data to the DataFrame
+#     df = pd.concat([df, expanded_df], ignore_index=True)
+
+#     try:
+#         df.to_csv('data.csv', mode='w', header=True, index=False)  # Overwrite the file
+#         print("Data saved successfully.")
+#     except Exception as e:
+#         print("Error saving data:", e)  # Catch any errors during saving
+
+#     flash('Form submitted successfully!')  # Flash a success message
+#     return redirect(url_for('index'))  # Redirect back to the index page
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
     # Collecting data from the form
@@ -253,15 +554,23 @@ def submit_form():
         'price_100g': request.form.get('price_100g')
     }
     
-    print("Collected Data:", data)  # Debug print
 
+
+
+    # Check for zero values in the submitted form data
+    zero_detected = any(
+        value in ['0', '0.0'] for value in data.values() if value is not None
+    )
+    if zero_detected:
+        send_warning_email()  # Call the email function
+        flash("Warning: Zero values detected in the form! Email has been sent.", 'warning')
+        return redirect(url_for('index'))
 
     # Load existing data from CSV or create an empty DataFrame if the file doesn't exist
     try:
         df = pd.read_csv('data.csv')
     except FileNotFoundError:
         df = pd.DataFrame()  # Create an empty DataFrame if the file does not exist
-
 
     # Generate the next code using the get_next_code function
     try:
@@ -271,35 +580,11 @@ def submit_form():
         flash(str(e), 'error')
         return redirect(url_for('index'))
 
-
-
     # Create a DataFrame from the collected form data
     form_df = pd.DataFrame([data])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     # Add new columns if they do not exist in the DataFrame
-    new_columns = ['SKU', 'DESCRIPTION', 'CATEGORY', 'SUB-CATEGORY', 'TYPE', 'SIZE']
+    new_columns = ['SKU', 'DESCRIPTION', 'CATEGORY', 'SUB-CATEGORY', 'TYPE', 'SIZE', 'PRICE']
     for col in new_columns:
         if col not in df.columns:
             df[col] = ""  # Initialize new columns with empty strings
@@ -309,97 +594,23 @@ def submit_form():
         flash('Data with this code already exists. Please use a different code.', 'error')
         return redirect(url_for('index'))
 
-
-
-
-
-
-    
-    # Process tasting notes as a list initially
+    # Process tasting notes
     tasting_notes = request.form.get('tasting_notes')
     tasting_notes_list = [note.strip() for note in tasting_notes.strip("'\"").split(',')]
     tasting_notes_str = ', '.join(tasting_notes_list)  # Convert list to a single string
-
-    # Run the spelling check on the joined string
     corrected_tasting_notes_str = check_spelling(tasting_notes_str)
-
-    # Log the output for debugging
-    print("Corrected Tasting Notes String:", corrected_tasting_notes_str)  # Debug print
-
-    # Convert the corrected string back to a list
     corrected_tasting_notes_list = [note.strip().title() for note in corrected_tasting_notes_str.split(',')]
 
-    # Format tasting notes with ' & ' before the last item
     if len(corrected_tasting_notes_list) > 1:
         formatted_tasting_notes = ', '.join(corrected_tasting_notes_list[:-1]) + ' & ' + corrected_tasting_notes_list[-1]
     else:
         formatted_tasting_notes = corrected_tasting_notes_list[0] if corrected_tasting_notes_list else ''
-
-    # Assign the formatted notes back to `data` and `form_df` for CSV storage
     data['tasting_notes'] = corrected_tasting_notes_list
     form_df['tasting_notes'] = formatted_tasting_notes
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # Prepare to expand rows based on variations
+    # Expand rows for variations
     expanded_rows = []
     last_serial = df['SKU'].apply(lambda x: int(x.split('-')[-1]) if isinstance(x, str) and '-' in x else 0).max()
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # Mapping of price columns to variations
-    price_mapping = {
-        "filter_wholesale_price_2lb": ('2Lb. Filter', 'Coffee', 'Wholesale'),
-        "espresso_wholesale_price_2lb": ('2Lb. Espresso', 'Coffee', 'Wholesale'),
-        "filter_wholesale_price_8oz": ('8oz. Filter', 'Coffee', 'Wholesale'),
-        "espresso_wholesale_price_8oz": ('8oz. Espresso', 'Coffee', 'Wholesale'),
-        "filter_retail_price_8oz": ('8oz. Filter', 'Coffee', 'Retail'),
-        "espresso_retail_price_8oz": ('8oz. Espresso', 'Coffee', 'Retail'),
-        "retail_with_box_price_8oz": ('8oz. Exclusive', 'Coffee', 'Retail'),
-        "jar_with_box_price_40gr": ('40g Jar Exclusive', 'Coffee', 'Retail'),
-        "jar_normal_price_40gr": ('40g Jar Plain', 'Coffee', 'Retail'),
-        "price_100g": ('100g Filter', 'Coffee', 'Retail')
-    }
-
-    # Variations for each CODE
     variations = [
         ('2Lb. Filter', 'Coffee', 'Wholesale', 'Filter', '2Lb'),
         ('2Lb. Espresso', 'Coffee', 'Wholesale', 'Espresso', '2Lb'),
@@ -413,12 +624,11 @@ def submit_form():
         ('100g Espresso', 'Coffee', 'Retail', 'Espresso', '100g')
     ]
 
-    # Process each row of form data for variations
     for index, row in form_df.iterrows():
         for variation in variations:
             description, category, sub_category, type_, size = variation
 
-            # Construct the SKU
+            # Construct SKU
             sku_elements = [
                 str(row['code']) if not pd.isna(row['code']) else 'x',
                 str(row['tel_name'])[0] if not pd.isna(row['tel_name']) else 'x',
@@ -428,11 +638,10 @@ def submit_form():
                 type_[0],
                 size[0]
             ]
-
             last_serial += 1
             sku = "{}-{}-{:05}".format(sku_elements[0], ''.join(sku_elements[1:]), last_serial)
 
-            # Create a new row based on the current row, but with variations
+            # Create a new row
             new_row = row.copy()
             new_row['SKU'] = sku
             new_row['DESCRIPTION'] = description
@@ -441,47 +650,119 @@ def submit_form():
             new_row['TYPE'] = type_
             new_row['SIZE'] = size
 
-            # Check for price and add it to the new row
-            price = ''
-            for price_col, price_variation in price_mapping.items():
-                if price_variation[0] == description and price_variation[1:] == (category, sub_category):
-                    price_value = form_df.loc[index, price_col]
-                    if pd.notna(price_value) and float(price_value) > 0:
-                        price = price_value
-                    break
+            # Assign price or skip row if invalid
+            price_col = ''
+            if description == '2Lb. Filter':
+                price_col = 'filter_wholesale_price_2lb'
+            elif description == '2Lb. Espresso':
+                price_col = 'espresso_wholesale_price_2lb'
+            elif description == '8oz. Filter':
+                price_col = 'filter_wholesale_price_8oz'
+            elif description == '8oz. Espresso':
+                price_col = 'espresso_wholesale_price_8oz'
+            elif description == '8oz. Exclusive':
+                price_col = 'retail_with_box_price_8oz'
+            elif description == '40g Jar Exclusive':
+                price_col = 'jar_with_box_price_40gr'
+            elif description == '40g Jar Plain':
+                price_col = 'jar_normal_price_40gr'
+            elif description in ['100g Filter', '100g Espresso']:
+                price_col = 'price_100g'
+            elif description == 'Drip Bags':
+                price_col = 'filter_retail_price_8oz'
 
-            # Special cases for '100g' and '40g Jar' variations
-            if (description, category, sub_category) in [('100g Espresso', 'Coffee', 'Retail'),
-                                                         ('40g Jar Exclusive', 'Coffee', 'Retail'),
-                                                         ('40g Jar Plain', 'Coffee', 'Retail')]:
-                if description.startswith('100g'):
-                    price_col = "price_100g"
-                elif 'Exclusive' in description:
-                    price_col = "jar_with_box_price_40gr"
-                else:
-                    price_col = "jar_normal_price_40gr"
+            try:
+                price_value = float(row[price_col]) if price_col and pd.notna(row[price_col]) and float(row[price_col]) > 0 else ''
+                new_row['PRICE'] = price_value
+            except (ValueError, TypeError):
+                new_row['PRICE'] = ''
 
-                price_value = form_df.loc[index, price_col]
-                if pd.notna(price_value) and float(price_value) > 0:
-                    price = price_value
+            if not new_row['PRICE']:
+                continue  # Skip rows with empty or invalid price
 
-            new_row['PRICE'] = price  # Add price to the new row
-            expanded_rows.append(new_row)  # Append the new row to expanded rows list
+            expanded_rows.append(new_row)
 
-    # Create a new DataFrame from the expanded rows
     expanded_df = pd.DataFrame(expanded_rows)
 
-    # Append new form data to the DataFrame
+    # Drop price-related columns before saving
+    price_columns = [
+        'filter_wholesale_price_2lb', 'espresso_wholesale_price_2lb',
+        'filter_wholesale_price_8oz', 'espresso_wholesale_price_8oz',
+        'filter_retail_price_8oz', 'espresso_retail_price_8oz',
+        'retail_with_box_price_8oz', 'jar_with_box_price_40gr',
+        'jar_normal_price_40gr', 'price_100g'
+    ]
+    expanded_df = expanded_df.drop(columns=price_columns, errors='ignore')
+
+    # Append to the existing DataFrame and save
     df = pd.concat([df, expanded_df], ignore_index=True)
-
     try:
-        df.to_csv('data.csv', mode='w', header=True, index=False)  # Overwrite the file
-        print("Data saved successfully.")
+        df.to_csv('data.csv', mode='w', header=True, index=False)
+        flash('Form submitted successfully!')
     except Exception as e:
-        print("Error saving data:", e)  # Catch any errors during saving
+        flash(f'Error saving data: {str(e)}', 'error')
 
-    flash('Form submitted successfully!')  # Flash a success message
-    return redirect(url_for('index'))  # Redirect back to the index page
+    return redirect(url_for('index'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -604,10 +885,15 @@ def upload_csv():
 
 
 
-
 @app.route('/save-csv', methods=['POST'])
 def save_csv():
     form_data = request.form.getlist('data')
+    has_zero = any(value in ['0', '0.0'] for value in form_data)
+
+    if has_zero:
+        # Send warning email
+        send_warning_email()
+        flash("Warning: Zero values detected! Email has been sent.")
 
     # Retrieve column names from session
     columns = session.get('columns')
@@ -620,11 +906,6 @@ def save_csv():
     reshaped_data = [form_data[i:i + num_columns] for i in range(0, len(form_data), num_columns)]
     uploaded_data = pd.DataFrame(reshaped_data, columns=columns)
 
-    # Check for missing or empty values
-    if uploaded_data.isnull().values.any() or (uploaded_data == "").values.any():
-        flash('All fields are required. Please fill in all fields before saving.')
-        return redirect(url_for('upload_csv'))
-    
     # Format elevation values
     uploaded_data['elevation'] = uploaded_data['elevation'].apply(format_elevation)
 
@@ -636,7 +917,6 @@ def save_csv():
         corrected_notes_list = [note.strip().title() for note in corrected_notes_str.split(',')]
         return ', '.join(corrected_notes_list[:-1]) + ' & ' + corrected_notes_list[-1] if len(corrected_notes_list) > 1 else corrected_notes_list[0]
 
-    # Apply the correct_tasting_notes function to the 'tasting_notes' column
     uploaded_data['tasting_notes'] = uploaded_data['tasting_notes'].apply(correct_tasting_notes)
 
     # Load existing data from CSV for duplicate checking and SKU generation
@@ -657,15 +937,26 @@ def save_csv():
     # Generate 'code' for any rows without it
     def generate_code_if_missing(row):
         if pd.isna(row['code']) or row['code'] == "":
-            row['code'] = get_next_code(existing_data)  # Generate code using existing_data
+            row['code'] = get_next_code(existing_data)
         return row
 
-    # Apply code generation to rows without a 'code'
     uploaded_data = uploaded_data.apply(generate_code_if_missing, axis=1)
 
     # Expand rows based on variations and generate SKUs for each
     expanded_rows = []
-    last_serial = existing_data['SKU'].apply(lambda x: int(x.split('-')[-1]) if isinstance(x, str) and '-' in x else 0).max()
+    last_serial = existing_data['SKU'].apply(
+        lambda x: int(x.split('-')[-1]) if isinstance(x, str) and '-' in x else 0
+    ).max()
+
+
+    # Remove price fields after price mapping
+    price_columns = [
+        'filter_wholesale_price_2lb', 'espresso_wholesale_price_2lb',
+        'filter_wholesale_price_8oz', 'espresso_wholesale_price_8oz',
+        'filter_retail_price_8oz', 'espresso_retail_price_8oz',
+        'retail_with_box_price_8oz', 'jar_with_box_price_40gr',
+        'jar_normal_price_40gr', 'price_100g'
+    ]
     variations = [
         ('2Lb. Filter', 'Coffee', 'Wholesale', 'Filter', '2Lb'),
         ('2Lb. Espresso', 'Coffee', 'Wholesale', 'Espresso', '2Lb'),
@@ -720,7 +1011,29 @@ def save_csv():
             elif '100g' in description:
                 price_col = 'price_100g'
 
-            new_row['PRICE'] = row[price_col] if price_col and pd.notna(row[price_col]) and float(row[price_col]) > 0 else ''
+            # Assign price or set empty if invalid
+            try:
+                price_value = float(row[price_col]) if price_col and pd.notna(row[price_col]) and float(row[price_col]) > 0 else ''
+                new_row['PRICE'] = price_value
+            except (ValueError, TypeError):
+                new_row['PRICE'] = ''
+
+            # Check if the price is empty (or zero)
+            if not new_row['PRICE']:
+                continue  # Skip rows with empty or invalid price
+
+
+
+
+
+
+
+            # Remove price-related fields from the row before saving
+            for col in price_columns:
+                if col in new_row:
+                    new_row.drop(col, inplace=True)
+
+        
 
             expanded_rows.append(new_row)
 
@@ -737,12 +1050,6 @@ def save_csv():
         logging.error(f"Error saving CSV file: {str(e)}")
 
     return redirect(url_for('view_data'))
-
-
-
-
-
-
 
 
 
@@ -782,6 +1089,236 @@ def save_edits():
     except Exception as e:
         print(f"Error saving changes: {e}")
         return jsonify({'message': 'Error saving changes.'}), 500
+
+
+
+
+
+
+
+
+
+
+
+
+
+def get_user_info():
+    # Extract user info from the request (IP address, User Agent)
+    user_ip = request.remote_addr
+    user_agent = request.headers.get('User-Agent')
+    user_info = f"IP: {user_ip}, User-Agent: {user_agent}"
+    return user_info
+
+
+def send_warning_email(upload_time=None, faulty_data=None):
+    # Set the UAE timezone (UTC+4)
+    uae_timezone = pytz.timezone('Asia/Dubai')
+
+    # Get the current system time in UAE timezone if upload_time is not provided
+    current_time = upload_time or datetime.now(uae_timezone).strftime("%Y-%m-%d %H:%M:%S")
+
+    # Get user information (e.g., from session or request)
+    user_info = get_user_info()
+
+    # Creating detailed message for the email body
+    msg_body = f"""
+    A user has saved data with zero values (0 or 0.0). 
+    Please review the data.
+
+    Details:
+    -------------------------
+    Time of upload: {current_time}
+    
+    User Information:
+    -------------------------
+    {user_info if user_info else "User information not available."}
+    
+    Faulty Data:
+    -------------------------
+    {faulty_data if faulty_data else ""}
+
+    Please check and correct the zero values in the data, as these are not allowed.
+
+    Instructions:
+    -------------------------
+    - Review the data and verify if any fields contain zero values.
+    - Correct the values and re-upload the data.
+    """
+    
+    # Create the email message
+    msg = Message(
+        'Warning: Zero Value Detected',
+        recipients=['salmanbadharudheen22@gmail.com']  # Replace with recipient email
+    )
+    
+    # Set the email body with the detailed information
+    msg.body = msg_body
+
+    try:
+        # Send the email
+        mail.send(msg)
+        print(f"Warning email sent at {current_time}")
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#------------------------Admin --------------------#
+
+@app.route('/admin/pricing', methods=['GET', 'POST'])
+def admin_pricing():
+    # Load current pricing data from the CSV or database
+    pricing_data = load_pricing_data()  # Function to load pricing data (CSV or DB)
+
+    if request.method == 'POST':
+        # Handle form submission to update pricing
+        new_price = request.form.get('new_price')
+        # Update your data (either CSV, database, or file)
+        update_pricing_data(new_price)
+
+        flash('Pricing updated successfully!', 'success')
+        return redirect(url_for('admin_pricing'))
+
+    return render_template('admin_pricing.html', pricing_data=pricing_data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

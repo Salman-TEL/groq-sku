@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+</head>
+<body>
+    <h2>Add New Form Field</h2>
+    <form action="{{ url_for('admin') }}" method="POST">
+        <label for="field_name">Field Name:</label>
+        <input type="text" name="field_name" required>
+        <br><br>
+        
+        <label for="field_label">Field Label:</label>
+        <input type="text" name="field_label" required>
+        <br><br>
+
+        <label for="field_type">Field Type:</label>
+        <select name="field_type">
+            <option value="text">Text</option>
+            <option value="number">Number</option>
+            <option value="date">Date</option>
+        </select>
+        <br><br>
+        
+        <button type="submit">Add Field</button>
+    </form>
+</body>
+</html>

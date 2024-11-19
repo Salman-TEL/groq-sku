@@ -43,7 +43,7 @@
             </form>
         </div>
         <div class="form-container">
-            <form action="/submit_form" method="POST">
+            <form action="/submit_form" method="POST" onsubmit="return validateForm()">
                 <div class="form-group">
                     <label for="production_date">Production Date:</label>
                     <input type="date" id="production_date" name="production_date" class="input-field" required>
@@ -126,12 +126,40 @@
                 </div>
                 <div class="form-group">
                     <label for="jar_normal_price_40gr">40gr Jar Normal Price:</label>
-                    <input type="number" id="jar_normal_price_40gr" name="jar_normal_price_40gr" class="input-field" required>
+                    <input type="number" id="jar_normal_price_40gr" name="jar_normal_price_40gr" class="input-field" >
                 </div>
                 <div class="form-group">
                     <label for="price_100g">100 grams Pricess:</label>
-                    <input type="number" id="price_100g" name="price_100g" class="input-field" required>
+                    <input type="number" id="price_100g" name="price_100g" class="input-field" >
                 </div>
+
+
+
+                
+
+                <!-- Add New Pricing Button -->
+                <button type="button" id="add-price-btn">Add New Price</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
         
                 <div class="form-group">
                     <input type="submit" value="Submit" class="submit-button">
@@ -145,6 +173,69 @@
             <a href="{{ url_for('view_data') }}" class="view-data-button">View Data</a>  <!-- Link to view the CSV data -->
         </div>
     </div>
+
+
+  
+
+    <script>
+        // Function to dynamically add new price fields
+        document.getElementById('add-price-btn').addEventListener('click', function() {
+            const pricingFields = document.getElementById('pricing-fields');
+    
+            // Create a new div for the new price group
+            const newPriceGroup = document.createElement('div');
+            newPriceGroup.classList.add('form-group');
+            
+            // Create label and input for the new price (customize as needed)
+            const label = document.createElement('label');
+            const inputId = 'new_price_' + (pricingFields.children.length + 1); // Unique ID for each input
+            label.setAttribute('for', inputId);
+            label.innerText = 'New Price Field ' + (pricingFields.children.length + 1) + ':';
+            
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.id = inputId;
+            input.name = 'new_price_field_' + (pricingFields.children.length + 1);
+            input.classList.add('input-field');
+            input.required = true;
+            
+            // Append the label and input to the new price group
+            newPriceGroup.appendChild(label);
+            newPriceGroup.appendChild(input);
+    
+            // Add the new price group to the form
+            pricingFields.appendChild(newPriceGroup);
+        });
+    </script>
+
+
+
+
+    
+
+<script>
+    function validateForm() {
+        // Collect all input fields in the form
+        const inputs = document.querySelectorAll('.input-field');
+
+        // Iterate over input fields to check for zero values
+        for (let input of inputs) {
+            if (input.type === 'number' && (input.value === '0' || input.value === '0.0')) {
+                // Display a warning popup
+                const confirmSend = confirm(
+                    "One or more fields contain a zero value. Do you still want to proceed?"
+                );
+                return confirmSend; // Only proceed if the user confirms
+            }
+        }
+
+        // If no zero values, proceed with form submission
+        return true;
+    }
+</script>
+
+
+
 </body>
 </html>
 
